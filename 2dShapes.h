@@ -67,71 +67,39 @@ void ellipse(int centreX, int centreY, int a, int b, int color = WHITE, float ro
     }
 }
 
-// TODO correct errors
+void parabola(int X, int Y, int a, int l, int color = WHITE)
+{
+    int x = 0, y = 0;
+    int d = 1 - 2*a;
 
-// int arcCheck(double x, double y, double s, double e)
-// {
-//     double angle;
-//     if(x == 0)
-//     {
-//         if(y > 0)
-//         {
-//             angle = 90;
-//         }
-//         else
-//         {
-//             angle = 270;
-//         }
-//     }
-//     else
-//     {
-//         angle = (atan(abs(y)/abs(x))*180)/PI;
-//         if(x < 0 && y < 0)
-//             angle = 180 - angle;
-//         else if(x < 0 && y > 0)
-//             angle += 180;
-//         else if(x > 0 && y > 0)
-//             angle = 360 - angle;
-//     }
-
-//     if((angle >= s && angle <= e) || (360+angle >= s && 360+angle <= e))
-//         return 1;
-//     return 0;
-// }
-
-// void midarc(int X, int Y, int r, int startAngle, int endAngle, int color)
-// {
-//     int x = 0;
-//     int y = 0 + r;
-//     int d = 1-r;
-//     double s = startAngle;
-//     double e = endAngle;
-//     putpixel(x,y, color);
-//     while(x <= y)
-//     {
-//         if(d <= 0)
-//             d += 2*x+3;
-//         else
-//         {
-//             d += 2*(x-y) + 5;
-//             y--;
-//         }
-//         x++;
-//         if(arcCheck(x,y,s,e))
-//             putpixel(x + X,y + Y,color);
-//         if(arcCheck(x,-y,s,e))
-//             putpixel(x + X,-y + Y,color);
-//         if(arcCheck(-x,y,s,e))
-//             putpixel(-x + X,y + Y,color);
-//         if(arcCheck(-x,-y,s,e))    
-//             putpixel(-x + X,-y + Y,color);
-//         if(arcCheck(y,x,s,e))
-//             putpixel(y + X,x + Y,color);
-//         if(arcCheck(y,-x,s,e))
-//             putpixel(y + X,-x + Y,color);
-//         if(arcCheck(-y,-x,s,e))
-//             putpixel(-y + X,-x + Y,color);
-//         if(arcCheck(-y,x,s,e))
-//             putpixel(-y + X,x + Y,color);
-//     }
-// }
+    while(x <= a && x <= l)
+    {
+        putpixel(x + X, y + Y, color);
+        putpixel(x + X, -y + Y, color);
+        if(d < 0)
+        {
+            d += 2*y + 3;
+        }
+        else
+        {
+            d += 2*y + 3 - 4*a;
+            x++;
+        }
+        y++;
+    }
+    while(x <= l)
+    {
+        putpixel(x + X, y + Y, color);
+        putpixel(x + X, -y + Y, color);
+        if(d > 0)
+        {
+            d -= 4*a;
+        }
+        else
+        {
+            d += 2*y + 2 - 4*a;
+            y++;
+        }
+        x++;
+    }
+}
