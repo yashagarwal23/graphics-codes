@@ -1,3 +1,5 @@
+#pragma once
+
 #include "polygon.h"
 #include <vector>
 #include <list>
