@@ -169,6 +169,6 @@ void weilerAthertonPolyClipping(Polygon subject, Polygon clip)
     }
     for (int i = 0; i < ans.size(); i++)
     {
-        ans[i].plotPolygon(RED);
+        ScanLinePolyFilling(ans[i]);
     }
 }

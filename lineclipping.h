@@ -95,7 +95,7 @@ bool check(Line l, Point2D p)
     pair<int, int> pv = p.toPair() - l.p1.toPair();
     pair<int, int> lv = l.p2.toPair() - l.p1.toPair();
     pair<int, int> normal = getnormal(lv);
-    int d = normal.first * pv.first + normal.second * pv.second;
+    float d = normal.first * pv.first + normal.second * pv.second;
     if (d > 0)
         return false;
     else
