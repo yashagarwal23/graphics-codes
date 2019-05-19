@@ -1,6 +1,8 @@
 #pragma once
 
 #include <graphics.h>
+#include <utility>
+#include <iostream>
 using namespace std;
 
 class Point2D
@@ -10,14 +12,18 @@ public:
     Point2D()
     {
     }
-    Point2D(float x, float y)
+    Point2D(float x1, float y1)
     {
-        this->x = x;
-        this->y = y;
+        x = x1;
+        y = y1;
     }
     void show(int color = WHITE)
     {
         putpixel(x, y, color);
+    }
+    pair<float,float> toPair()
+    {
+        return {x, y};
     }
 };
 

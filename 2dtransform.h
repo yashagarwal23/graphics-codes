@@ -3,7 +3,7 @@
 #include "polygon.h"
 #include <math.h>
 #include <utility>
-#define PI 3.14
+#define PI 3.14159265
 
 Point2D translate(Point2D p, int X, int Y)
 {

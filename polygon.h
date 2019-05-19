@@ -28,7 +28,7 @@ class Polygon
             int n = points.size();
             for (int i = 0; i < n; i++)
             {
-                DrawLine(points[i], points[(i + 1) % n]);
+                DrawLine(points[i], points[(i + 1) % n], color);
             }
         }
 };

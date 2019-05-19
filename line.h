@@ -10,15 +10,20 @@ public:
     Line()
     {
     }
-    Line(Point2D p1, Point2D p2)
+    Line(Point2D pa, Point2D pb)
     {
-        this->p1 = p1;
-        this->p2 = p2;
-        slope = (1.0 * (p2.y - p1.y)) / (1.0 * (p2.x - p1.x));
+        p1 = Point2D(pa.x, pa.y);
+        p2 = Point2D(pb.x, pb.y);
+        if(pa.x == pb.y)
+            slope = __FLT_MAX__;
+        else
+            slope = (1.0 * (p2.y - p1.y)) / (1.0 * (p2.x - p1.x));
     }
+
     Line(float x1, float y1, float x2, float y2)
     {
-        Line(Point2D(x1, y1), Point2D(x2, y2));
+        p1 = Point2D(x1, y1);
+        p2 = Point2D(x2, y2);
     }
 
     void plotLine(int color = WHITE)
