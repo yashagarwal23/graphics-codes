@@ -31,3 +31,8 @@ Point2D scale(Point2D p, double scaleX, double scaleY)
     ans.y = p.y * scaleY;
     return ans;
 }
+
+Point2D invert(Point2D p)
+{
+    return Point2D(p.x, -p.y);
+}
