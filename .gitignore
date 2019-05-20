@@ -1,6 +1,6 @@
 .vscode/
 *.out
 *.h.gch
-test.cpp
+*.cpp
 *.txt
 
