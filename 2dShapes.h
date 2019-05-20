@@ -29,10 +29,11 @@ void midarc(int centreX, int centreY, int radius, int startangle, int endangle, 
     setcolor(WHITE);
 }
 
-void ellipse(int centreX, int centreY, int a, int b, int color = WHITE, float rotateAngle = 0)
+void midellipse(int centreX, int centreY, int a, int b, int color = WHITE, float rotateAngle = 0)
 {
     float d = a * a + 0.25 * (float)(b)*b - a * b * b;
-    int x = a, y = 0;
+    float x = a, y = 0;
+    vector<Point2D> points;
 
     while ((a * a * y) <= (b * b * x))
     {
@@ -46,8 +47,10 @@ void ellipse(int centreX, int centreY, int a, int b, int color = WHITE, float ro
             x--;
         }
         y++;
-        Point2D rotated = rotate(Point2D(x,y) , rotateAngle);
-        show4symmetry(rotated, centreX, centreY, color);
+        points.push_back(Point2D(x, y));
+        points.push_back(Point2D(x, -y));
+        points.push_back(Point2D(-x, y));
+        points.push_back(Point2D(-x, -y));
     }
     d = b * b * (x - 1) * (x - 1) + a * a * (y + 0.5) * (y + 0.5) - a * a * b * b;
     while (x > 0)
@@ -62,20 +65,30 @@ void ellipse(int centreX, int centreY, int a, int b, int color = WHITE, float ro
             y++;
         }
         x--;
-        Point2D rotated = rotate(Point2D(x,y) , rotateAngle);
-        show4symmetry(rotated, centreX, centreY, color);
+        points.push_back(Point2D(x, y));
+        points.push_back(Point2D(x, -y));
+        points.push_back(Point2D(-x, y));
+        points.push_back(Point2D(-x, -y));
+    }
+    for(int i = 0; i < points.size(); i++)
+    {
+        Point2D rotated = rotate(points[i], rotateAngle);
+        Point2D translated = translate(rotated, -centreX, -centreY);
+        translated.show(color);     
     }
 }
 
-void parabola(int X, int Y, int a, int l, int color = WHITE)
+void parabola(int X, int Y, int a, int l, int color = WHITE, float rotateAngle = 0)
 {
     int x = 0, y = 0;
     int d = 1 - 2*a;
 
+    vector<Point2D> points;
+
     while(x <= a && x <= l)
     {
-        putpixel(x + X, y + Y, color);
-        putpixel(x + X, -y + Y, color);
+        points.push_back(Point2D(x, y));
+        points.push_back(Point2D(x, -y));
         if(d < 0)
         {
             d += 2*y + 3;
@@ -89,8 +102,8 @@ void parabola(int X, int Y, int a, int l, int color = WHITE)
     }
     while(x <= l)
     {
-        putpixel(x + X, y + Y, color);
-        putpixel(x + X, -y + Y, color);
+        points.push_back(Point2D(x, y));
+        points.push_back(Point2D(x, -y));
         if(d > 0)
         {
             d -= 4*a;
@@ -101,5 +114,11 @@ void parabola(int X, int Y, int a, int l, int color = WHITE)
             y++;
         }
         x++;
+    }
+    for(int i = 0; i < points.size(); i++)
+    {
+        Point2D rotated = rotate(points[i], rotateAngle);
+        Point2D translated = translate(rotated, -X, -Y);
+        translated.show(color);     
     }
 }

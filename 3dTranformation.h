@@ -173,6 +173,31 @@ Point3D aligntoZ(vec v, Point3D p)
     return Point3D(ans.v[0], ans.v[1], ans.v[2]);   
 }
 
+Point3D alignfromZ(vec v, Point3D p)
+{
+    float a = v.v[0];
+    float b = v.v[1];
+    float c = v.v[2];
+    float lambda = sqrt(b*b + c*c);
+    float modV = sqrt(a*a + b*b + c*c);
+
+    mat tmat;
+    tmat.m[0][0] = lambda/modV;
+    tmat.m[1][0] = (-1*a*b)/(lambda * modV);
+    tmat.m[2][0] = (-1*a*c)/(lambda * modV);
+    tmat.m[1][1] = c/lambda;
+    tmat.m[2][1] = -b/lambda;
+    tmat.m[0][2] = a/lambda;
+    tmat.m[1][2] = b/lambda;
+    tmat.m[2][2] = c/lambda;
+    tmat.m[3][3] = 1;
+
+    vec pv(p);
+    vec ans = matxvec(tmat, pv);
+    ans.normalise();
+    return Point3D(ans.v[0], ans.v[1], ans.v[2]);
+}
+
 Point2D parrProjection(vec dir, Point3D p)
 {
     Point3D pEcs = aligntoZ(dir, p);
