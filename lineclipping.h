@@ -47,7 +47,7 @@ void cyrus_beck(Line line, Polygon poly)
     // float min = 1.5;
     // int minI = 0;
     vector<tstruct> tvalues;
-    for (int i = 0; i < n; i++)
+    for (int i = n-1; i >= 0; i--)
     {
         pff pe1 = poly.points[i].toPair();
         pff pe2 = poly.points[(i + 1) % n].toPair();

@@ -29,7 +29,7 @@ public:
     void plotLine(int color = WHITE)
     {
         setcolor(color);
-        line(p1.x, p1.y, p2.x, p2.y);
+        line((int)p1.x, (int)p1.y, (int)p2.x, (int)p2.y);
         setcolor(WHITE);
     }
 };
