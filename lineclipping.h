@@ -3,6 +3,7 @@
 #include "line.h"
 #include "polygon.h"
 #include "2dtransform.h"
+#include <algorithm>
 
 typedef pair<float, float> pff;
 
@@ -35,8 +36,6 @@ pff getnormal(pff p)
 
 void draw(pff p1, pff p2, float t1, float t2)
 {
-    if (t1 <= t2)
-        return;
     pff del = p2 - p1;
     Line(Point2D(p1.first + del.first * t1, p1.second + del.second * t1), Point2D(p1.first + del.first * t2, p1.second + del.second * t2)).plotLine();
 }
@@ -66,28 +65,84 @@ void cyrus_beck(Line line, Polygon poly)
             else if (den > 0 && t <= 1.0 && t >= 0.0)
             {
                 tvalues.push_back({t, false});
-                if (tvalues.size() >= 2 && tvalues[tvalues.size() - 2].isEnter)
-                {
-                    draw(p1, p2, tvalues[tvalues.size() - 2].t, tvalues[tvalues.size() - 1].t);
-                }
             }
         }
     }
-    // int i = minI;
-    // bool f = false;
-    // float tmin = 0.0, tmax = 1.0;
-    // do
-    // {
-    //     if(tvalues[i].isEnter)
-    //     {
-    //         tmin = max(tmin, tvalues[i].t);
-    //         f = false;
-    //     }
-    //     else
-    //     {
 
-    //     }
-    // }while(i != minI);
+    vector<tstruct>::iterator req;
+    vector<tstruct>::iterator it = tvalues.begin();
+    for (int i = 0; i < tvalues.size(); i++)
+    {
+        it++;
+        if (tvalues[i].t > tvalues[(i + 1) % tvalues.size()].t)
+        {
+            req = it;
+            break;
+        }
+    }
+
+    it = tvalues.insert(it, {1, false});
+    it++;
+    it = tvalues.insert(it, {0, true});
+
+    vector<double> entries;
+    vector<double> exits;
+
+    int entryI = 0;
+    int exitI = 0;
+    for (int i = 0; i < tvalues.size(); i++)
+    {
+        if (tvalues[i].t == 0)
+        {
+            entryI = i;
+            exitI = (i - 1) % tvalues.size();
+            break;
+        }
+    }
+    
+    n = tvalues.size();
+    int i = entryI;
+    vector<float> tmp;
+    do
+    {
+        if (tvalues[i].isEnter)
+        {
+            tmp.push_back(tvalues[i].t);
+        }
+        else if(tvalues[i].isEnter == false && tmp.size() > 0)
+        {
+            auto it = max_element(tmp.begin(), tmp.end());
+            entries.push_back(*it);
+            tmp.clear();
+        }
+        i = (i + 1) % n;
+    } while (i != entryI);
+
+    tmp.clear();
+    i = exitI;
+    do
+    {
+        if (tvalues[i].isEnter && tmp.size() > 0)
+        {
+            auto it = min_element(tmp.begin(), tmp.end());
+            exits.push_back(*it);
+            tmp.clear();
+        }
+        else
+        {
+            tmp.push_back(tvalues[i].t);
+        }
+        i = (i - 1 + n) % n;
+    } while (i != exitI);
+
+    sort(entries.begin(), entries.end());
+    sort(exits.begin(), exits.end());
+
+    for (int x = 0; x < entries.size(); x++)
+    {
+        if(entries[x] <= exits[x])
+            draw(line.p1.toPair(),line.p2.toPair(), entries[x], exits[x]);
+    }
 }
 
 bool check(Line l, Point2D p)
